@@ -1,0 +1,34 @@
+package Controlador;
+
+import Modelo.Cuadrado;
+import Vista.VistaCuadrado;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+
+public class ControladorCuadrado implements ActionListener{
+    private Cuadrado modelo;
+    private VistaCuadrado vista;
+    
+    public  ControladorCuadrado(Cuadrado modelo, VistaCuadrado vista){
+        this.modelo = modelo;
+        this.vista = vista;
+        this.vista.agregarActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Calcular")) {
+            try {
+                double lado = vista.getLado();
+                modelo.setLado((float) lado);
+                double area = modelo.hallarArea();
+                double perimetro = modelo.calcularPerimetro();
+                vista.mostrarResultado(area, perimetro);
+            } catch (NumberFormatException ex) {
+                // La validación ya se realiza en la Vista, pero podríamos tener manejo adicional aquí si es necesario.
+                JOptionPane.showMessageDialog(vista, "Error al procesar la entrada.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+}
